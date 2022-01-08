@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import path from "path";
 import {router as addItemRouter} from "./routes/addItem"
+import {router as sortTypeRouter} from "./routes/sortInventory"
 import { generateInventoryTable } from "./generateInventoryTable";
 
 dotenv.config();
@@ -12,6 +13,7 @@ const app = express();
 
 app.set('view engine', 'ejs');
 app.use(express.urlencoded({ extended : true}));
+app.use(express.json());
 
 app.listen(PORT, () => console.log(`Server started on ${PORT}`));
 
@@ -20,6 +22,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 const uri: string = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.xsu8f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 app.use('/addItem', addItemRouter);
+app.use('/sort', sortTypeRouter);
 
 main().catch(console.error);
 

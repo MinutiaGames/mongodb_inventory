@@ -26,11 +26,19 @@
 
     <table class="content-table">
         <thead>
-            <tr>
-                <th>Item ID</th>
-                <th>Item Name</th>
-                <th>Unit</th>
-                <th>Quantity</th>
+            <tr> <!--I know why this isn't working; because they're all named "sortType" it's taking the first value, even when I wrap them in their own form-->
+                <form action="/sort" method="POST">
+                    <th><button type="submit" name="sortType" value="itemId">Item ID</button></th>
+                </form>
+                <form action="/sort" method="POST">
+                    <th><button type="submit" name="sortType" value="name">Item Name</button></th>
+                </form>
+                <form action="/sort" method="POST">
+                    <th><button type="submit" name="sortType" value="unitMeasurement">Unit</button></th>
+                </form>
+                <form action="/sort" method="POST">
+                    <th><button type="submit" name="sortType" value="quantity">Quantity</button></th>
+                </form>
             </tr>
         </thead>
         <tbody>

@@ -1,5 +1,5 @@
 import express from "express";
-import { MongoClient, SortDirection } from "mongodb";
+import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 import { generateInventoryTable } from "../generateInventoryTable";
 
@@ -16,14 +16,16 @@ router.post("/", async (req, res) => {
     try {
         await client.connect();
         
-        await createListing(client, {
-            itemId: req.body.itemId,
-            name: req.body.itemName,
-            unitMeasurement: req.body.itemUnit,
-            quantity: req.body.itemQuantity
-        });
+        // await createListing(client, {
+        //     itemId: req.body.itemId,
+        //     name: req.body.itemName,
+        //     unitMeasurement: req.body.itemUnit,
+        //     quantity: req.body.itemQuantity
+        // });
 
-        const insertedHtml = (await generateInventoryTable(client)).toString();
+        const sortType = req.body.sortType;
+
+        const insertedHtml = (await generateInventoryTable(client, {sortType: 1})).toString();
 
         res.render("index", {
             inventory: insertedHtml
@@ -36,9 +38,3 @@ router.post("/", async (req, res) => {
         await client.close();
     }
 });
-
-async function createListing(client: MongoClient, newListing: object) {
-    const result = await client.db("simple_inventory").collection("inventory").insertOne(newListing);
-
-    console.log(`New listing created with the following id: ${result.insertedId}`);
-}

@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import express from "express";
 import path from "path";
 import {router as addItemRouter} from "./routes/addItem"
+import { generateInventoryTable } from "./generateInventoryTable";
 
 dotenv.config();
 
@@ -19,36 +20,6 @@ app.use(express.static(path.join(__dirname, '../public')));
 const uri: string = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.xsu8f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
 app.use('/addItem', addItemRouter);
-
-// app.post("/", async (req, res) => {
-    
-//     const client: MongoClient = new MongoClient(uri);
-
-//     try {
-//         await client.connect();
-        
-//         await createListing(client, {
-//             itemId: req.body.itemId,
-//             name: req.body.itemName,
-//             unitMeasurement: req.body.itemUnit,
-//             quantity: req.body.itemQuantity
-//         });
-
-//         const insertedHtml = (await generateInventoryTable(client)).toString();
-
-//         res.render("index", {
-//             inventory: insertedHtml
-//         });
-        
-//         // res.redirect('/');
-        
-//     } catch (error) {
-//         console.log("There's an error");
-//         console.log(error)
-//     } finally {
-//         await client.close();
-//     }
-// });
 
 main().catch(console.error);
 
@@ -75,52 +46,25 @@ async function main() {
 
 }
 
-async function generateInventoryTable(client: MongoClient, sortParam: {[key: string]:SortDirection} = {name:1}) {
-    const cursor = client.db("simple_inventory").collection("inventory").find().sort(sortParam);
-
-    const results = await cursor.toArray();
-
-    let insertedHtml: string = '';
-
-    results.forEach((result, i) => {
-        if (result.itemId != "ABC123") {
-            insertedHtml += "<tr>";
-            insertedHtml += `<td>${result.itemId}</td>`;
-            insertedHtml += `<td>${result.name}</td>`;
-            insertedHtml += `<td>${result.unitMeasurement}</td>`;
-            insertedHtml += `<td>${result.quantity}</td>`;
-            insertedHtml += "</tr>";
-        }
-    });
+// async function monitorInventoryChanges(client: MongoClient, timeInMs = 60000, pipeline = []) {
+//     const collection = client.db("simple_inventory").collection("inventory");
     
-    return insertedHtml;
-}
-
-async function monitorInventoryChanges(client: MongoClient, timeInMs = 60000, pipeline = []) {
-    const collection = client.db("simple_inventory").collection("inventory");
+//     const changeStream = collection.watch(pipeline);
     
-    const changeStream = collection.watch(pipeline);
+//     changeStream.on('change', (next) => {
+//         console.log(next);
+//         main().catch(console.error);
+//     });
     
-    changeStream.on('change', (next) => {
-        console.log(next);
-        main().catch(console.error);
-    });
-    
-    await closeChangeStream(timeInMs, changeStream);
-}
+//     await closeChangeStream(timeInMs, changeStream);
+// }
 
-async function closeChangeStream(timeInMs = 60000, changeStream: ChangeStream) {
-    return new Promise<void>((resolve) => {
-        setTimeout(() => {
-            console.log("Closing the change stream");
-            changeStream.close();
-            resolve();
-        }, timeInMs);
-    })
-}
-
-async function createListing(client: MongoClient, newListing: object) {
-    const result = await client.db("simple_inventory").collection("inventory").insertOne(newListing);
-
-    console.log(`New listing created with the following id: ${result.insertedId}`);
-}
+// async function closeChangeStream(timeInMs = 60000, changeStream: ChangeStream) {
+//     return new Promise<void>((resolve) => {
+//         setTimeout(() => {
+//             console.log("Closing the change stream");
+//             changeStream.close();
+//             resolve();
+//         }, timeInMs);
+//     })
+// }

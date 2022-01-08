@@ -8,6 +8,7 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
 const addItem_1 = require("./routes/addItem");
+const generateInventoryTable_1 = require("./generateInventoryTable");
 dotenv_1.default.config();
 const PORT = process.env.PORT || 3000;
 const app = (0, express_1.default)();
@@ -22,7 +23,7 @@ async function main() {
     const client = new mongodb_1.MongoClient(uri);
     try {
         await client.connect();
-        const insertedHtml = (await generateInventoryTable(client)).toString();
+        const insertedHtml = (await (0, generateInventoryTable_1.generateInventoryTable)(client)).toString();
         app.get("/", (req, res) => {
             res.render("index", {
                 inventory: insertedHtml
@@ -35,42 +36,4 @@ async function main() {
     finally {
         await client.close();
     }
-}
-async function generateInventoryTable(client, sortParam = { name: 1 }) {
-    const cursor = client.db("simple_inventory").collection("inventory").find().sort(sortParam);
-    const results = await cursor.toArray();
-    let insertedHtml = '';
-    results.forEach((result, i) => {
-        if (result.itemId != "ABC123") {
-            insertedHtml += "<tr>";
-            insertedHtml += `<td>${result.itemId}</td>`;
-            insertedHtml += `<td>${result.name}</td>`;
-            insertedHtml += `<td>${result.unitMeasurement}</td>`;
-            insertedHtml += `<td>${result.quantity}</td>`;
-            insertedHtml += "</tr>";
-        }
-    });
-    return insertedHtml;
-}
-async function monitorInventoryChanges(client, timeInMs = 60000, pipeline = []) {
-    const collection = client.db("simple_inventory").collection("inventory");
-    const changeStream = collection.watch(pipeline);
-    changeStream.on('change', (next) => {
-        console.log(next);
-        main().catch(console.error);
-    });
-    await closeChangeStream(timeInMs, changeStream);
-}
-async function closeChangeStream(timeInMs = 60000, changeStream) {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            console.log("Closing the change stream");
-            changeStream.close();
-            resolve();
-        }, timeInMs);
-    });
-}
-async function createListing(client, newListing) {
-    const result = await client.db("simple_inventory").collection("inventory").insertOne(newListing);
-    console.log(`New listing created with the following id: ${result.insertedId}`);
 }

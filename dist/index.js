@@ -57,8 +57,8 @@ async function main() {
         await client.close();
     }
 }
-async function generateInventoryTable(client) {
-    const cursor = client.db("simple_inventory").collection("inventory").find().sort({ name: 1 });
+async function generateInventoryTable(client, sortParam = { name: 1 }) {
+    const cursor = client.db("simple_inventory").collection("inventory").find().sort(sortParam);
     const results = await cursor.toArray();
     let insertedHtml = '';
     results.forEach((result, i) => {

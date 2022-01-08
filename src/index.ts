@@ -1,4 +1,4 @@
-import { ChangeStream, MongoClient } from "mongodb";
+import { ChangeStream, MongoClient, SortDirection } from "mongodb";
 import dotenv from "dotenv";
 import express from "express";
 import path from "path";
@@ -72,8 +72,8 @@ async function main() {
 
 }
 
-async function generateInventoryTable(client: MongoClient) {
-    const cursor = client.db("simple_inventory").collection("inventory").find().sort({name:1});
+async function generateInventoryTable(client: MongoClient, sortParam: {[key: string]:SortDirection} = {name:1}) {
+    const cursor = client.db("simple_inventory").collection("inventory").find().sort(sortParam);
 
     const results = await cursor.toArray();
 

@@ -2,6 +2,7 @@ import { ChangeStream, MongoClient, SortDirection } from "mongodb";
 import dotenv from "dotenv";
 import express from "express";
 import path from "path";
+import {router as addItemRouter} from "./routes/addItem"
 
 dotenv.config();
 
@@ -17,35 +18,37 @@ app.use(express.static(path.join(__dirname, '../public')));
 
 const uri: string = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.xsu8f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 
-app.post("/", async (req, res) => {
+app.use('/addItem', addItemRouter);
+
+// app.post("/", async (req, res) => {
     
-    const client: MongoClient = new MongoClient(uri);
+//     const client: MongoClient = new MongoClient(uri);
 
-    try {
-        await client.connect();
+//     try {
+//         await client.connect();
         
-        await createListing(client, {
-            itemId: req.body.itemId,
-            name: req.body.itemName,
-            unitMeasurement: req.body.itemUnit,
-            quantity: req.body.itemQuantity
-        });
+//         await createListing(client, {
+//             itemId: req.body.itemId,
+//             name: req.body.itemName,
+//             unitMeasurement: req.body.itemUnit,
+//             quantity: req.body.itemQuantity
+//         });
 
-        const insertedHtml = (await generateInventoryTable(client)).toString();
+//         const insertedHtml = (await generateInventoryTable(client)).toString();
 
-        res.render("index", {
-            inventory: insertedHtml
-        });
+//         res.render("index", {
+//             inventory: insertedHtml
+//         });
         
-        // res.redirect('/');
+//         // res.redirect('/');
         
-    } catch (error) {
-        console.log("There's an error");
-        console.log(error)
-    } finally {
-        await client.close();
-    }
-});
+//     } catch (error) {
+//         console.log("There's an error");
+//         console.log(error)
+//     } finally {
+//         await client.close();
+//     }
+// });
 
 main().catch(console.error);
 

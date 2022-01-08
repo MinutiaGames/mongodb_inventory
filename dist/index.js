@@ -7,6 +7,7 @@ const mongodb_1 = require("mongodb");
 const dotenv_1 = __importDefault(require("dotenv"));
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
+const addItem_1 = require("./routes/addItem");
 dotenv_1.default.config();
 const PORT = process.env.PORT || 3000;
 const app = (0, express_1.default)();
@@ -15,29 +16,7 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.listen(PORT, () => console.log(`Server started on ${PORT}`));
 app.use(express_1.default.static(path_1.default.join(__dirname, '../public')));
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.xsu8f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
-app.post("/", async (req, res) => {
-    const client = new mongodb_1.MongoClient(uri);
-    try {
-        await client.connect();
-        await createListing(client, {
-            itemId: req.body.itemId,
-            name: req.body.itemName,
-            unitMeasurement: req.body.itemUnit,
-            quantity: req.body.itemQuantity
-        });
-        const insertedHtml = (await generateInventoryTable(client)).toString();
-        res.render("index", {
-            inventory: insertedHtml
-        });
-    }
-    catch (error) {
-        console.log("There's an error");
-        console.log(error);
-    }
-    finally {
-        await client.close();
-    }
-});
+app.use('/addItem', addItem_1.router);
 main().catch(console.error);
 async function main() {
     const client = new mongodb_1.MongoClient(uri);

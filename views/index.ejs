@@ -5,6 +5,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./styles.css">
+    <script src="./tableSort.js"></script>
+    <script>
+        function submitSortData() {
+
+        }
+    </script>
     <title>Document</title>
 </head>
 <body>
@@ -24,21 +30,15 @@
         <button type="submit">Submit</button>
     </form>
 
-    <table class="content-table">
+    <table class="content-table table-sortable">
         <thead>
-            <tr> <!--I know why this isn't working; because they're all named "sortType" it's taking the first value, even when I wrap them in their own form-->
-                <form action="/sort" method="POST">
-                    <th><button type="submit" name="sortType" value="itemId">Item ID</button></th>
-                </form>
-                <form action="/sort" method="POST">
-                    <th><button type="submit" name="sortType" value="name">Item Name</button></th>
-                </form>
-                <form action="/sort" method="POST">
-                    <th><button type="submit" name="sortType" value="unitMeasurement">Unit</button></th>
-                </form>
-                <form action="/sort" method="POST">
-                    <th><button type="submit" name="sortType" value="quantity">Quantity</button></th>
-                </form>
+            <tr>
+                <!--<form action="/sort" method="POST">-->
+                    <th><!--<button type="submit" name="sortType" value="itemId">-->Item ID<!--</button>--></th>
+                    <th><!--<button type="submit" name="sortType" value="name">-->Item Name<!--</button>--></th>
+                    <th><!--<button type="submit" name="sortType" value="unitMeasurement">-->Unit<!--</button>--></th>
+                    <th><!--<button type="submit" name="sortType" value="quantity">-->Quantity<!--</button>--></th>
+                <!--</form>-->
             </tr>
         </thead>
         <tbody>

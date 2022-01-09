@@ -17,7 +17,7 @@ app.set('view engine', 'ejs');
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.listen(PORT, () => console.log(`Server started on ${PORT}`));
-app.use(express_1.default.static(path_1.default.join(__dirname, '../public')));
+app.use(express_1.default.static(path_1.default.join(__dirname, '../dist/public')));
 const uri = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.xsu8f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 app.use('/addItem', addItem_1.router);
 app.use('/sort', sortInventory_1.router);

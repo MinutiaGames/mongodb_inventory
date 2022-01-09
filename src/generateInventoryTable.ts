@@ -1,3 +1,4 @@
+import { json } from "express";
 import { MongoClient, SortDirection } from "mongodb";
 
 
@@ -18,6 +19,8 @@ export async function generateInventoryTable(client: MongoClient, sortParam: {[k
             insertedHtml += "</tr>";
         }
     });
+    // Insert the results to the page as json object to allow for manipulation
+    // insertedHtml += `<script>let inventoryData = ${JSON.stringify(results)};</script>`;
     
     return insertedHtml;
 }

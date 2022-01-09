@@ -1,4 +1,4 @@
-import express from "express";
+import express, { json } from "express";
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 import { generateInventoryTable } from "../generateInventoryTable";
@@ -25,7 +25,7 @@ router.post("/", async (req, res) => {
 
         const sortType = req.body.sortType;
 
-        const insertedHtml = (await generateInventoryTable(client, {sortType: 1})).toString();
+        const insertedHtml = (await generateInventoryTable(client, {[sortType]: 1})).toString();
 
         res.render("index", {
             inventory: insertedHtml

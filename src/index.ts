@@ -17,7 +17,7 @@ app.use(express.json());
 
 app.listen(PORT, () => console.log(`Server started on ${PORT}`));
 
-app.use(express.static(path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../dist/public')));
 
 const uri: string = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MONGODB_PASS}@cluster0.xsu8f.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
 

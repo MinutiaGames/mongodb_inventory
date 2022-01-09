@@ -16,7 +16,7 @@ exports.router.post("/", async (req, res) => {
     try {
         await client.connect();
         const sortType = req.body.sortType;
-        const insertedHtml = (await (0, generateInventoryTable_1.generateInventoryTable)(client, { sortType: 1 })).toString();
+        const insertedHtml = (await (0, generateInventoryTable_1.generateInventoryTable)(client, { [sortType]: 1 })).toString();
         res.render("index", {
             inventory: insertedHtml
         });

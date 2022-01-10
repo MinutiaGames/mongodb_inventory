@@ -11,7 +11,7 @@ export async function generateInventoryTable(client: MongoClient, sortParam: {[k
 
     results.forEach((result, i) => {
         if (result.itemId != "ABC123") {
-            insertedHtml += "<tr>";
+            insertedHtml += "<tr class='inventory-hover' onclick='openItemEditWindow(this)'>";
             insertedHtml += `<td>${result.itemId}</td>`;
             insertedHtml += `<td>${result.name}</td>`;
             insertedHtml += `<td>${result.unitMeasurement}</td>`;

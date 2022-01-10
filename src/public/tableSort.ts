@@ -59,4 +59,4 @@ window.addEventListener('load', (event) => {
             sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
         });
     })
-})
+});

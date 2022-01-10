@@ -41,6 +41,12 @@
     color: #009879;
   }
 
+  .inventory-hover:hover {
+    background-color: royalblue !important;
+    cursor: pointer;
+  }
+
+  /*Sortable Table*/
   .table-sortable th {
     cursor: pointer;
   }

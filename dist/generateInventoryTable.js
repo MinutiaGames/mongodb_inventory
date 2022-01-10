@@ -7,7 +7,7 @@ async function generateInventoryTable(client, sortParam = { name: 1 }) {
     let insertedHtml = '';
     results.forEach((result, i) => {
         if (result.itemId != "ABC123") {
-            insertedHtml += "<tr>";
+            insertedHtml += "<tr class='inventory-hover' onclick='openItemEditWindow(this)'>";
             insertedHtml += `<td>${result.itemId}</td>`;
             insertedHtml += `<td>${result.name}</td>`;
             insertedHtml += `<td>${result.unitMeasurement}</td>`;

@@ -2,6 +2,11 @@
     font-family: sans-serif; /* Change your font family */
   }
   
+body {
+  background-color: #333343;
+}
+
+  /* table */
   .content-table {
     border-collapse: collapse;
     margin: 25px 0;
@@ -26,6 +31,7 @@
   
   .content-table tbody tr {
     border-bottom: 1px solid #dddddd;
+    background-color: #fff;
   }
   
   .content-table tbody tr:nth-of-type(even) {

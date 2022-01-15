@@ -4,6 +4,7 @@ import express from "express";
 import path from "path";
 import {router as addItemRouter} from "./routes/addItem"
 import {router as sortTypeRouter} from "./routes/sortInventory"
+import {router as ajaxRouter} from "./routes/ajaxRouter"
 import { generateInventoryTable } from "./generateInventoryTable";
 
 dotenv.config();
@@ -23,6 +24,7 @@ const uri: string = `mongodb+srv://${process.env.MONGODB_USER}:${process.env.MON
 
 app.use('/addItem', addItemRouter);
 app.use('/sort', sortTypeRouter);
+app.use('/ajax', ajaxRouter);
 
 main().catch(console.error);
 

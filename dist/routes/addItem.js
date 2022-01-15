@@ -19,7 +19,7 @@ exports.router.post("/", async (req, res) => {
             itemId: req.body.itemId,
             name: req.body.itemName,
             unitMeasurement: req.body.itemUnit,
-            quantity: req.body.itemQuantity
+            quantity: parseInt(req.body.itemQuantity)
         });
         const insertedHtml = (await (0, generateInventoryTable_1.generateInventoryTable)(client)).toString();
         res.render("index", {

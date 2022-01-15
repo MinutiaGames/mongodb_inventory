@@ -43,20 +43,21 @@ function sortTableByColumn(table: HTMLTableElement | null, column: number, asc =
     table.querySelector(`th:nth-child(${column + 1})`)?.classList.toggle("th-sort-asc", asc);
 }
 
-window.addEventListener('load', (event) => {
-    // sortTableByColumn(document.querySelector("table"), 0, true);
-    document.querySelectorAll(".table-sortable th").forEach(headerCell => {
-        headerCell.addEventListener("click", () => {
-            const tableElement = headerCell.parentElement?.parentElement?.parentElement;
-            const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement?.children, headerCell);
-            const currentIsAscending = headerCell.classList.contains("th-sort-asc");
+// // This is the old way of sortting the table, based on sorting the data already present in the page
+// window.addEventListener('load', (event) => {
+//     // sortTableByColumn(document.querySelector("table"), 0, true);
+//     document.querySelectorAll(".table-sortable th").forEach(headerCell => {
+//         headerCell.addEventListener("click", () => {
+//             const tableElement = headerCell.parentElement?.parentElement?.parentElement;
+//             const headerIndex = Array.prototype.indexOf.call(headerCell.parentElement?.children, headerCell);
+//             const currentIsAscending = headerCell.classList.contains("th-sort-asc");
 
-            if (tableElement === null || tableElement === undefined) {
-                console.error("Why");
-                return 0;
-            }
+//             if (tableElement === null || tableElement === undefined) {
+//                 console.error("Why");
+//                 return 0;
+//             }
 
-            sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
-        });
-    })
-});
+//             sortTableByColumn(tableElement, headerIndex, !currentIsAscending);
+//         });
+//     })
+// });

@@ -20,7 +20,7 @@ router.post("/", async (req, res) => {
             itemId: req.body.itemId,
             name: req.body.itemName,
             unitMeasurement: req.body.itemUnit,
-            quantity: req.body.itemQuantity
+            quantity: parseInt(req.body.itemQuantity)
         });
 
         const insertedHtml = (await generateInventoryTable(client)).toString();

@@ -25,3 +25,23 @@ exports.router.post("/sort", async (req, res) => {
         await client.close();
     }
 });
+exports.router.post("/add", async (req, res) => {
+    const client = new mongodb_1.MongoClient(uri);
+    try {
+        await client.connect();
+        console.log('error');
+        const result = client.db("simple_inventory").collection("inventory").insertOne({
+            itemId: req.body.itemId,
+            name: req.body.name,
+            unitMeasurement: req.body.unitMeasurement,
+            quantity: req.body.quantity
+        });
+        res.send(result);
+    }
+    catch (error) {
+        console.log(error);
+    }
+    finally {
+        await client.close();
+    }
+});

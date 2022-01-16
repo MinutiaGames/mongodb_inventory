@@ -11,22 +11,21 @@
     <title>Inventory</title>
 </head>
 <body>
-    <button type="button" onclick="main()">Get Ajax</button>
-    <form action="/addItem" method="POST">
+    <div id="addItem">
         <label>Item ID
-            <input type="text" name="itemId" />
+            <input type="text" name="itemId" required/>
         </label>
         <label>Item Name
-            <input type="text" name="itemName" />
+            <input type="text" name="name" required/>
         </label>
         <label>Unit Measurement
-            <input type="text" name="itemUnit" />
+            <input type="text" name="unitMeasurement" required/>
         </label>
         <label>Quantity
-            <input type="number" name="itemQuantity" />
+            <input type="number" name="quantity" required/>
         </label>
-        <button type="submit">Submit</button>
-    </form>
+    </div>
+    <button type="button" onclick="addItem()">Add Item</button>
 
     <table class="content-table table-sortable">
         <thead>

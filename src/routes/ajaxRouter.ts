@@ -15,12 +15,10 @@ router.post("/sort", async (req, res) => {
     try {
         await client.connect();
         const cursor = client.db("simple_inventory").collection("inventory").find({}).sort({[req.body.column]: req.body.ascend});
-        // .limit(50);
 
         const results = await cursor.toArray();
 
         res.send(results);
-        // console.log(req.body.column);
 
     } catch (error) {
         console.log(error)
@@ -28,5 +26,28 @@ router.post("/sort", async (req, res) => {
         await client.close();
     }
     
-    
 });
+
+router.post("/add", async (req, res) => {
+    
+    const client: MongoClient = new MongoClient(uri);
+    
+    try {
+        await client.connect();
+        console.log('error');
+        const result = client.db("simple_inventory").collection("inventory").insertOne({
+            itemId: req.body.itemId,
+            name: req.body.name,
+            unitMeasurement: req.body.unitMeasurement,
+            quantity: req.body.quantity
+        });
+
+        res.send(result);
+
+    } catch (error) {
+        console.log(error)
+    } finally {
+        await client.close();
+    }
+
+})

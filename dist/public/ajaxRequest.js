@@ -1,15 +1,39 @@
 "use strict";
+async function addItem() {
+    const addItemElem = document.getElementById('addItem');
+    const itemIdElem = addItemElem.children[0].children[0];
+    const nameElem = addItemElem.children[0].children[0];
+    const unitElem = addItemElem.children[0].children[0];
+    const quantityElem = addItemElem.children[0].children[0];
+    const newItem = {
+        itemId: itemIdElem.value,
+        name: nameElem.value,
+        unitMeasurement: unitElem.value,
+        quantity: quantityElem.value
+    };
+    console.log(newItem);
+    await fetch('/ajax/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newItem)
+    })
+        .then(response => response.text())
+        .then(data => insertItemToTable(data));
+}
+function insertItemToTable(data) {
+    console.log(JSON.parse(data));
+}
 let sortAscend = true;
 async function sortColumn(column) {
+    const tBody = document.querySelector("tbody");
+    tBody.classList.add('loading-background');
     const data = {
         column: column,
         ascend: sortAscend ? 1 : -1
     };
     sortAscend = !sortAscend;
-    const tBody = document.querySelector("tbody");
-    if (tBody === null)
-        return;
-    tBody.classList.add('loading-background');
     await fetch('/ajax/sort', {
         method: 'POST',
         headers: {
@@ -22,8 +46,6 @@ async function sortColumn(column) {
 }
 function generateNewTable(data) {
     const tBody = document.querySelector("tbody");
-    if (tBody === null)
-        return;
     tBody.classList.remove('loading-background');
     while (tBody.firstChild) {
         tBody.removeChild(tBody.firstChild);

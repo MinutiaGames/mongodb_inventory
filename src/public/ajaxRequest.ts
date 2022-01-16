@@ -1,20 +1,51 @@
+////// Add Item
+async function addItem() {
+    const addItemElem = document.getElementById('addItem')!;
+    const itemIdElem = addItemElem.children[0].children[0] as HTMLInputElement;
+    const nameElem = addItemElem.children[0].children[0] as HTMLInputElement;
+    const unitElem = addItemElem.children[0].children[0] as HTMLInputElement;
+    const quantityElem = addItemElem.children[0].children[0] as HTMLInputElement;
+    
+    const newItem = {
+        itemId: itemIdElem.value,
+        name: nameElem.value,
+        unitMeasurement: unitElem.value,
+        quantity: quantityElem.value
+    }
+
+    console.log(newItem);
+
+    await fetch('/ajax/add', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newItem)
+    })
+    .then(response => response.text())
+    .then(data => insertItemToTable(data));
+}
+
+function insertItemToTable(data: string) {
+    console.log(JSON.parse(data));
+}
+
+
+////// Sort Table
 let sortAscend = true;
 
-// This function is being called on the client
 async function sortColumn(column: string) {
+    
+    const tBody = document.querySelector("tbody")!;
+    tBody.classList.add('loading-background');
+    
     const data = {
         column: column,
         ascend: sortAscend ? 1 : -1
     }
 
     sortAscend = !sortAscend;
-
-    const tBody = document.querySelector("tbody");
-
-    if (tBody === null) return;
-
-    tBody.classList.add('loading-background');
-
+    
     await fetch('/ajax/sort', {
         method: 'POST',
         headers: {
@@ -30,9 +61,7 @@ async function sortColumn(column: string) {
 
 function generateNewTable(data: string) {
 
-    const tBody = document.querySelector("tbody");
-
-    if (tBody === null) return;
+    const tBody = document.querySelector("tbody")!;
 
     tBody.classList.remove('loading-background');
 
